@@ -1,5 +1,3 @@
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
 #include <stdio.h>
 #include <math.h>
 #include <stdint.h>
@@ -32,38 +30,6 @@ to_base(int num, int base, int max_digits, int to_truncate)
         --cur;
     }
     return dec_num;
-}
-
-static PyObject *
-willmath_to_base(PyObject *self, PyObject *args)
-{
-    int num, base, digits, cutoff;
-
-    if (!PyArg_ParseTuple(args, "iii", &num, &base, &digits, &cutoff))
-        return NULL;
-
-    return PyString_FromString(to_base(num, base, digits, cutoff));
-}
-
-PyMODINIT_FUNC
-PyInit_base(void)
-{
-    PyObject *m;
-
-    m = PyModule_Create(&spammodule);
-    if (m == NULL)
-        return NULL;
-
-    SpamError = PyErr_NewException("spam.error", NULL, NULL);
-    Py_XINCREF(SpamError);
-    if (PyModule_AddObject(m, "error", SpamError) < 0) {
-        Py_XDECREF(SpamError);
-        Py_CLEAR(SpamError);
-        Py_DECREF(m);
-        return NULL;
-    }
-
-    return m;
 }
 
 int
